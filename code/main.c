@@ -4,9 +4,10 @@
 #include "settings.h"
 #include "mc.h"
 #include "audio.h"
+#include "scene.h"
 
 void init_game();
-void run_game(mc* player, audio* game_audio);
+void run_game(mc* player, audio* game_audio, scene* game_scene);
 void check_movement(mc* player);
 
 int main(void){
@@ -16,9 +17,10 @@ int main(void){
     // Load game resources.
     mc player = mc_init();
     audio game_audio = audio_init();
+    scene game_scene = scene_init();
 
     // Run the game.
-    run_game(&player, &game_audio);
+    run_game(&player, &game_audio, &game_scene);
     return 0;
 }
 
@@ -29,7 +31,7 @@ void init_game(){
     InitWindow(window_width, window_height, "Top Secret");
 }
 
-void run_game(mc* player, audio* game_audio){
+void run_game(mc* player, audio* game_audio, scene* game_scene){
     while (!WindowShouldClose()){
         // Update audio stream.
         audio_update(game_audio);
@@ -43,6 +45,7 @@ void run_game(mc* player, audio* game_audio){
         // Draw game assets to the screen.
         BeginDrawing();
         ClearBackground(RAYWHITE);
+        draw_mainmenu(game_scene);
         DrawTexture(player->character, player->position.x, player->position.y, WHITE);
         mc_update(player);
         EndDrawing();
