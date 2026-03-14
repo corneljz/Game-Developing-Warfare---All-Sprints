@@ -20,6 +20,7 @@ typedef struct Character{
     int direction;
 
     Rectangle frame_rect;
+    Rectangle bounds;
     int frame_number;
     int current_frame;
     int frame_counter;

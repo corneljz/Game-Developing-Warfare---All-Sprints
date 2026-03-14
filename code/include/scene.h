@@ -10,8 +10,9 @@ This file contains function prototypes for the scene module.
 typedef struct scene{
     Texture2D mainmenu_background;     // The background texture for the main menu.
     Texture2D game_background_1;         // The background texture for the game scene.
-} scene;
+} Scene;
 
-scene scene_init(Settings* game_settings);                     // Initializes the game scene.
-void draw_mainmenu(scene* scene);        // Draws the main menu background.
+Scene scene_init(Settings* game_settings);                     // Initializes the game scene.
+void UpdateScene(Scene* scene, Settings* game_settings);
+void draw_mainmenu(Scene* scene);        // Draws the main menu background.
 #endif
