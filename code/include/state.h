@@ -9,6 +9,7 @@ Made by Steven Kenneth Darwy.
 
 #include "audio.h"
 #include "character.h"
+#include "cutscene.h"
 #include "game_context.h"
 #include "interactive.h"
 #include "map.h"
@@ -17,6 +18,7 @@ Made by Steven Kenneth Darwy.
 typedef enum{
     /* This enum contains the states of the game. */
     MAINMENU,                 // Main menu state
+    INTRO_CUTSCENE,
     GAMEPLAY,                 // Gameplay state
     PAUSE,                    // Pause state
     SETTINGS,                 // Settings state
@@ -29,7 +31,7 @@ typedef enum{
 int UpdateGame(
     GameState* game_state, Interactive* game_interactive, Character* player,
     Settings* game_settings, Map* game_map, GameContext* game_context,
-    Audio* game_audio, Vector2 map_size
+    Audio* game_audio, Vector2 map_size, VideoCutscene* introVideo
 );
 
 #endif

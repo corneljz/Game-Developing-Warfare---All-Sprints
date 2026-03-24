@@ -12,6 +12,7 @@ Made by Andrew Zhuo, Cornelius Jabez Lim, and Steven Kenneth Darwy
 #include "map.h"
 #include "raylib.h"
 #include "scene.h"
+#include "cutscene.h"
 #include "settings.h"
 #include "state.h"
 #include <stdio.h>
@@ -22,11 +23,11 @@ void RunGame(Character *player, Audio *game_audio, Settings *game_settings,
              Scene *game_scene, Interactive *game_interactive,
              Dialogue *game_dialogue, Map *game_map,
              NPC worldNPCs[], Item worldItems[], GameContext *game_context,
-             GameState *game_state);
+             GameState *game_state, VideoCutscene *introVideo);
 void DrawGame(Scene *game_scene, Settings *game_settings,
               Interactive *game_interactive, Map *game_map, Character *player,
               Dialogue *game_dialogue, GameContext *game_context,
-              GameState *game_state, NPC worldNPCs[], Item worldItems[]);
+              GameState *game_state, NPC worldNPCs[], Item worldItems[], VideoCutscene *introVideo);
 void EndGame(Audio *game_audio, Character *player, Item worldItems[], int itemCount, Scene *game_scene,
              Interactive *game_interactive, Map *game_map,
              Settings *game_settings);
@@ -35,6 +36,7 @@ int main(void){
     /* Initialize the game */
 
     // Initialize the settings and game.
+    SetAudioStreamBufferSizeDefault(65536);
     Settings game_settings = InitSettings();
     InitGame(&game_settings);
 
@@ -45,6 +47,7 @@ int main(void){
     Character player = InitCharacter(&game_settings, &game_data);
     Audio game_audio = InitAudio(&game_settings);
     Scene game_scene = InitScene(&game_settings);
+    VideoCutscene introVideo = { 0 };
     Interactive game_interactive = InitInteractive(&game_settings);
     Dialogue game_dialogue = LoadDialogue("../assets/text/dialogue1.txt");
     Map game_map = InitMap("../assets/map/MAINMAP.json");
@@ -65,7 +68,7 @@ int main(void){
 
     // Run the game.
     RunGame(&player, &game_audio, &game_settings, &game_scene, &game_interactive,
-            &game_dialogue, &game_map, worldNPCs, worldItems, &game_context, &game_state);
+            &game_dialogue, &game_map, worldNPCs, worldItems, &game_context, &game_state, &introVideo);
     
     // End the game.
     EndGame(&game_audio, &player, worldItems, 1, &game_scene, &game_interactive, &game_map, &game_settings);
@@ -94,14 +97,16 @@ void RunGame(Character *player, Audio *game_audio, Settings *game_settings,
         Scene *game_scene, Interactive *game_interactive,
         Dialogue *game_dialogue, Map *game_map,
         NPC worldNPCs[], Item worldItems[], GameContext *game_context,
-        GameState *game_state){
+        GameState *game_state, VideoCutscene *introVideo){
     /* Run the game */
     Dialogue *current_dialogue = game_dialogue;
     Interactable *objectToInteractWith = NULL;
 
     while (!WindowShouldClose()){
         // Update audio stream.
-        UpdateAudio(game_audio);
+        if (*game_state != INTRO_CUTSCENE) {
+            UpdateAudio(game_audio);
+        }
 
         // Calculate player hitbox and map size.
         Rectangle playerHitbox = {player->position.x + 75, player->position.y + 50, 60, 80};
@@ -124,27 +129,29 @@ void RunGame(Character *player, Audio *game_audio, Settings *game_settings,
         // Update game state
         if (UpdateGame(
             game_state, game_interactive, player, game_settings, game_map,
-            game_context, game_audio, map_size
+            game_context, game_audio, map_size, introVideo
         )){
             break;
         }
 
         // Draw game assets to the screen
         DrawGame(game_scene, game_settings, game_interactive, game_map, player,
-                current_dialogue, game_context, game_state, worldNPCs, worldItems);
+                current_dialogue, game_context, game_state, worldNPCs, worldItems, introVideo);
     }
 }
 
 void DrawGame(Scene *game_scene, Settings *game_settings, 
               Interactive *game_interactive, Map *game_map, Character *player,
               Dialogue *game_dialogue, GameContext *game_context,
-              GameState *game_state, NPC worldNPCs[], Item worldItems[]){
+              GameState *game_state, NPC worldNPCs[], Item worldItems[], VideoCutscene *introVideo){
     /* Draw the game */
     BeginDrawing();
-    ClearBackground(RAYWHITE);
+    ClearBackground(BLACK);
 
     if (*game_state == MAINMENU) {
         DrawMainMenu(game_scene, game_interactive);
+    } else if (*game_state == INTRO_CUTSCENE) {
+        DrawCutscene(game_scene, game_interactive, introVideo);
     } else if (*game_state == SETTINGS) {
         DrawSettings(game_scene, game_settings, game_interactive);
     } else if (*game_state == PAUSE) {

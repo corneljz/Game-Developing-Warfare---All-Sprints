@@ -42,8 +42,8 @@ typedef struct Interactive{
     bool is_volume_moving;         // Whether the volume slider is moving.
 } Interactive;
 
-Interactive InitInteractive(Settings* game_settings);                             // Initializes the interactive elements.
-void UpdateInteractive(Interactive* interactive, Settings* game_settings);        // Updates the interactive elements.
+Interactive InitInteractive(Settings* game_settings);                 // Initializes the interactive elements.
+void UpdateInteractive(Interactive* interactive, Settings* game_settings); // Updates the interactive elements.
 void CloseInteractive(Interactive* interactive);                                  // Closes the interactive elements.
 
 #endif

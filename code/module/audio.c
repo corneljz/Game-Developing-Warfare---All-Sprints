@@ -29,6 +29,14 @@ Audio InitAudio(Settings* game_settings){
     return new_audio;
 }
 
+void PauseGameMusic(Audio* audio) {
+    PauseMusicStream(audio->bg_music);
+}
+
+void ResumeGameMusic(Audio* audio) {
+    ResumeMusicStream(audio->bg_music);
+}
+
 void UpdateAudio(Audio* audio){
     /* Keep updating the background music buffer. */
     UpdateMusicStream(audio->bg_music);

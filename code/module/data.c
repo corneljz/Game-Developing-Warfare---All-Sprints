@@ -27,6 +27,7 @@ Data LoadData(Settings* game_settings){
             (float)game_settings->window_height / 2
         };
         data.volume = game_settings->game_volume;
+        data.isNewPlayer = true;
     }
 
     return data;
@@ -52,6 +53,7 @@ void ApplyData(Character* player, Item worldItems[], int itemCount, Settings* ga
 
     // Apply game settings
     game_settings->game_volume = data->volume;
+    game_settings->isNewPlayer = data->isNewPlayer;
     SetMasterVolume(game_settings->game_volume);
 }
 
@@ -73,6 +75,8 @@ void SaveData(Character* player, Item worldItems[], int itemCount, Settings* gam
     for (int i = 0; i < itemCount; i++){
         data.picked_up_items[i] = worldItems[i].picked_up;
     }
+
+    data.isNewPlayer = game_settings->isNewPlayer; // Set to false since we're saving data for an existing player
 
     // Save game settings
     data.volume = game_settings->game_volume;

@@ -18,6 +18,8 @@ typedef struct Audio{
 } Audio;
 
 Audio InitAudio(Settings* game_settings);              // Initializes the game's audio.
+void PauseGameMusic(Audio* audio);                     // Pauses the background music.
+void ResumeGameMusic(Audio* audio);                    // Resumes the background music.
 void UpdateAudio(Audio* audio);                        // Keep updating background music buffer.
 void CloseAudio(Audio* audio);                         // Close the audio device.
 void PlayScream(Audio* audio);                         // Play the scream sound.

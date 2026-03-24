@@ -27,6 +27,7 @@ typedef struct Data{
 
     // Game settings
     float volume;            // Volume of the game
+    bool isNewPlayer;
 } Data;
 
 Data LoadData(Settings* game_settings);                                          // Load game data

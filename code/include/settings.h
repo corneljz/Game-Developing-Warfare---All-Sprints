@@ -21,6 +21,8 @@ typedef struct Settings{
     float stamina_depletion_rate;       // Rate at which stamina decreases (per second).
     float stamina_recovery_rate;         // Rate of stamina recovery
     float hallucination_increase_rate;   // Rate of hallucination increase
+
+    bool isNewPlayer;                   // Is this the player's first time playing the game?
 } Settings;
 
 Settings InitSettings();     // Initializes the game settings.

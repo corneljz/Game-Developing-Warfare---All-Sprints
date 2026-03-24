@@ -9,6 +9,7 @@ Module made by Andrew Zhuo and Steven Kenneth Darwy.
 
 #include "interactive.h"
 #include "settings.h"
+#include "cutscene.h"
 
 typedef struct Scene{
     /* This struct contains the information for the scene in the game. */
@@ -22,6 +23,7 @@ typedef struct Scene{
 Scene InitScene(Settings* game_settings);                                                       // Initializes the game scene.
 Texture2D LoadBackground(const char* path, Settings* game_settings);                            // Loads the background texture.
 void DrawMainMenu(Scene* scene, Interactive* game_interactive);                                 // Draws the main menu background.
+void DrawCutscene(Scene* scene, Interactive* game_interactive, VideoCutscene* introVideo);                                                     // Draws the cutscene.
 void DrawPauseMenu(Scene* scene, Settings* game_settings, Interactive* game_interactive);       // Draws the pause menu background.
 void DrawSettings(Scene* scene, Settings* game_settings, Interactive* game_interactive);        // Draws the settings menu background.
 void CloseScene(Scene* scene);                                                                  // Closes the game scene and unloads textures.

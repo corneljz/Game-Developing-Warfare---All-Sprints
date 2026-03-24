@@ -59,6 +59,30 @@ void DrawMainMenu(Scene* scene, Interactive* game_interactive){
     );
 }
 
+void DrawCutscene(Scene* scene, Interactive* game_interactive, VideoCutscene* cutscene){
+    if (cutscene->frameTexture.id > 0) {
+        float vW = (float)cutscene->frameTexture.width;
+        float vH = (float)cutscene->frameTexture.height;
+        float screenW = (float)GetScreenWidth();
+        float screenH = (float)GetScreenHeight();
+
+        // Calculate scale to fit screen while keeping aspect ratio
+        float scale = (screenW / vW < screenH / vH) ? screenW / vW : screenH / vH;
+
+        Rectangle source = { 0, 0, vW, vH };
+        Rectangle dest = { 
+            (screenW - vW * scale) / 2, 
+            (screenH - vH * scale) / 2, 
+            vW * scale, 
+            vH * scale 
+        };
+            
+        // 2. Try to draw the video texture
+        DrawTexturePro(cutscene->frameTexture, source, dest, (Vector2){0,0}, 0.0f, WHITE);
+    }
+    DrawText("PRESS SPACE TO SKIP", 20, GetScreenHeight() - 40, 20, GRAY);
+}
+
 void DrawPauseMenu(Scene* scene, Settings* game_settings, Interactive* game_interactive){
     /* Draw pause menu scene. */
 

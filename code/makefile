@@ -46,11 +46,13 @@ $(OBJ_DIR)/%.o: $(MODULE_DIR)/%.c
 # ~~~ Utilities ~~~
 
 # Run command: Moves into the root folder to run the exe so paths work
-run: all
+build: all
+	$(PROJECT_NAME)
+
+run:
 	$(PROJECT_NAME)
 
 clean:
 	@if exist "$(OBJ_DIR)" rmdir /s /q "$(OBJ_DIR)"
 	@if exist "$(PROJECT_NAME)" del /f /q "$(PROJECT_NAME)"
-
-.PHONY: all prepare run clean
+	@if exist "../data/data.dat" del /f /q "../data/data.dat"
